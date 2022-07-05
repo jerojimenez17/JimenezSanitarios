@@ -40,7 +40,7 @@ function App() {
           <Routes>
             <Route
               path="/products"
-              element={<Products searchText={searchText} />}
+              element={<Products />}
             />
           </Routes>
         </BrowserRouter>

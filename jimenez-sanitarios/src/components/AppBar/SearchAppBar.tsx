@@ -83,20 +83,7 @@ export default function SearchAppBar({openDrawer, handleSearchText,searchText} :
           >
             Jimenez Sanitarios
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-            value={searchText}
-            onChange={(e)=>{ 
-                handleSearchText(e.target.value)}   
-            }
-
-              placeholder="Buscar..."
-              inputProps={{ 'aria-label': 'buscar' }}
-            />
-          </Search>
+          
         </Toolbar>
       </AppBar>
     </Box>
