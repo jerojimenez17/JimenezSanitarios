@@ -1,85 +1,135 @@
+import {
+  AddBoxSharp,
+  AddCircle,
+  RemoveCircle,
+  TableBar,
+} from "@mui/icons-material";
+import {
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+  IconButton,
+  TextField,
+  Box,
+} from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import { CartContext } from "./context/CartContext";
+import Product from "../../models/Product";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import { AddBoxSharp, AddCircle, RemoveCircle, TableBar } from '@mui/icons-material';
-import { Table, TableCell, TableHead, TableRow, Typography, IconButton, TextField } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react'
-import { CartContext } from './context/CartContext';
-import Product from '../../models/Product';
-import DeleteIcon from '@mui/icons-material/Delete';
-
-interface props{
-    product: Product;
+interface props {
+  edit: boolean;
 }
 
+const CartItems = ({ edit }: props) => {
+  const { cartState, addUnit, removeUnit, removeItem, changePrice, changeAmount} =
+    useContext(CartContext);
+  const { products } = cartState;
+  const [rowsPerPage, setRowsPerPage] = useState(100);
+  const [isInfiniteDisabled, setInfiniteDisabled] = useState(false);
+  const [newPrice, setNewPrice] = useState<Number>();
+  const [newAmount, setNewAmount] = useState<Number>();
+  useEffect(() => {
+    console.log(cartState);
+  }, [cartState]);
 
-const CartItems = () => {
+  const handleAddItem = (producto: Product) => {
+    addUnit(producto);
+  };
+  const handleRemoveUnit = (producto: Product) => {
+    removeUnit(producto);
+  };
+  const handleRemoveItem = (product: Product) => {
+    removeItem(product);
+  };
 
-    const { cartState,addUnit,removeUnit,removeItem } = useContext(CartContext);
-    const { products } = cartState;
-    const [rowsPerPage, setRowsPerPage] = useState(100);
-    const [isInfiniteDisabled, setInfiniteDisabled] = useState(false);
-    
-    useEffect(() => {
-      console.log(cartState);
-      
-    }, [cartState]);
-    
+  const handleEditPrice = (e: any, product: Product) => {
+    if (e.key === "Enter") {
+      product.price = e.target.value;
 
-    const handleAddItem = (producto:Product) => {
-        addUnit(producto);
+      changePrice(product);
     }
-    const handleRemoveUnit = (producto:Product) => {
-        removeUnit(producto);
+  };
+  const handleEditAmount = (e: any, product: Product) => {
+    if (e.key === "Enter") {
+      product.amount = e.target.value;
+      changeAmount(product);
     }
-    const handleRemoveItem = (product:Product) => {
-        removeItem(product);
-    }
+  };
 
   return (
-   
     <Table className="table">
-  
-    <TableHead>
-      
-      <TableCell>Descripcion</TableCell>
-      <TableCell>Marca</TableCell>
-      <TableCell>Cantidad</TableCell>
-      <TableCell>Precio</TableCell>
-     
-    </TableHead>
+      <TableHead>
+        <TableCell>Descripcion</TableCell>
+        <TableCell>Marca</TableCell>
+        <TableCell>Cantidad</TableCell>
+        <TableCell>Precio</TableCell>
+        <TableCell>Subtotal</TableCell>
+      </TableHead>
 
-    {
-      cartState.products.map((producto: Product, id: number) => (
+      {cartState.products.map((producto: Product, id: number) => (
         <TableRow key={producto.id} className="fila">
-          
-          <TableCell className="description">
-            {producto.description}
-          </TableCell>
+          <TableCell className="description">{producto.description}</TableCell>
           <TableCell className="marca">{producto.brand}</TableCell>
-          <TableCell className="cantidad"> {producto.amount}</TableCell>
-          <TableCell>
-            <TextField value={"$" + (Number(producto.price)).toFixed()}/>
-            
-          </TableCell>
-        
-              <IconButton aria-label="addItem" onClick={()=>handleAddItem(producto)}>
-                <AddCircle/>
+          {edit ? (
+            <TableCell>
+              <TextField
+                placeholder={producto.amount.toString()}
+                onKeyPress={(e: any) => {
+                  handleEditAmount(e, producto);
+                }}
+                onChange={(e: any) => {
+                  setNewAmount(e.target.value);
+                }}
+              />
+            </TableCell>
+          ) : (
+            <TableCell className="cantidad"> {producto.amount}</TableCell>
+          )}
+          {edit ? (
+            <TableCell>
+              <TextField
+                onKeyPress={(e: any) => {
+                  handleEditPrice(e, producto);
+                }}
+                onChange={(e: any) => {
+                  setNewPrice(e.target.value);
+                }}
+                placeholder={"$" + Number(producto.price).toFixed()}
+              />
+            </TableCell>
+          ) : (
+            <TableCell>{"$" + Number(producto.price).toFixed()}</TableCell>
+          )}
+          <TableCell className="SubTotal"> {(producto.amount * producto.price).toFixed()}</TableCell>
+          {edit && (
+            <Box>
+              <IconButton
+                aria-label="addItem"
+                onClick={() => handleAddItem(producto)}
+              >
+                <AddCircle />
               </IconButton>
-              <IconButton aria-label="removeUnit" onClick={()=>handleRemoveUnit(producto)}>
+              <IconButton
+                aria-label="removeUnit"
+                onClick={() => handleRemoveUnit(producto)}
+              >
                 <RemoveCircle />
               </IconButton>
-              <IconButton aria-label='removeItem' onClick={()=>handleRemoveItem(producto)}>
+              <IconButton
+                aria-label="removeItem"
+                onClick={() => handleRemoveItem(producto)}
+              >
                 <DeleteIcon />
               </IconButton>
-
+            </Box>
+          )}
         </TableRow>
-
       ))}
-  </Table>
-  )
+    </Table>
+  );
 };
 
 export default CartItems;
-
-
-
-

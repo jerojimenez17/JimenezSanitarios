@@ -9,8 +9,9 @@ import { CartContext } from "./context/CartContext";
 import CartItem from "./CartItems";
 import CartItems from "./CartItems";
 import { Box, Button, Divider, IconButton, Paper, Typography } from "@mui/material";
-import ReactToPrint from "react-to-print";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
 import PrintIcon from '@mui/icons-material/Print';
+import { EditSharp } from "@mui/icons-material";
 
 
 function Cart() {
@@ -25,37 +26,46 @@ function Cart() {
   const handleDeleteAll = () => {
     removeAll();
   }
-  const handlePrint = () => {
-    window.print();
-  }
+  const ref = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => ref.current,
+  })
+
+  const [edit, setEdit ] = useState<boolean>(false);
   return (
     <Box>
 
       <Paper className="itemCart">
-        <Typography variant="h3" className="title-card" color="primary">
-          Venta
+        <Box ref={ref}>
+
+        <Typography variant="h3" className="title-card" color="primary" ml={1}>
+          Jimenez Sanitarios
           </Typography> 
       
         <Divider />
     
         {
           
-        <CartItems />
-        
-        
-        
+          <CartItems edit={edit}/>
+          
+          
+          
         }
         <Divider />
         <Box display="flex" justifyContent="flex-end">
-          <Typography variant="h4" className="title-card" color="primary">
-            Total: {cartState.products.reduce((acc, cur) => acc + cur.price *cur.amount, 0).toFixed(2)}
+          <Typography variant="h4" className="title-card" color="primary" mr={1}>
+            Total: {cartState.products.reduce((acc, cur) => acc + cur.price *cur.amount, 0).toFixed()}
             </Typography>
+        </Box>
         </Box>
         <Divider />
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Button color="success"  variant="contained" onClick={handleDeleteAll}>
             Vender
           </Button>
+          <IconButton onClick={()=>setEdit(!edit)}>
+            <EditSharp/>
+          </IconButton>
           <Button variant="outlined" color="secondary">
             A Cuenta
           </Button>

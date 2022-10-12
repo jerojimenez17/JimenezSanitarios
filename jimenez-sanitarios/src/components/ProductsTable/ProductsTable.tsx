@@ -52,7 +52,7 @@ const ProductsTable = ({
           .filter((product: Product) => {
             return (
               product.description
-                ?.toString()
+                .toString()
                 .toLocaleLowerCase()
                 .includes(searchText.toLowerCase()) ||
               product.cod
