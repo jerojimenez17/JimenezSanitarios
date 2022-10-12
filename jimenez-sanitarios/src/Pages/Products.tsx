@@ -8,6 +8,7 @@ import {
   ListItemText,
   MenuItem,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -17,16 +18,13 @@ import ProductsTable from "../components/ProductsTable/ProductsTable";
 import Product from "../models/Product";
 import fetchProducts from "../services/ProductService";
 
-interface ProductsProps {
-  searchText: string;
-}
-const Products = ({ searchText }: ProductsProps) => {
+const Products = () => {
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [hasMore, setHasMore] = useState(true);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [productsListName, setProductListName] = useState<string>("taladro");
-
+  const [search,setSearch] = useState<string>("");
   useEffect(() => {
     fetchProducts(productsListName).then((productsWS: Product[]) =>
       setAllProducts(productsWS)
@@ -82,6 +80,7 @@ const Products = ({ searchText }: ProductsProps) => {
         </FormControl>
         {/* </Box>
         </Box> */}
+      <TextField sx={{display:'flex',justifyContent: 'flex-start', maxWidth:'60%',ml:3}} variant="standard" label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
       </Grid>
       {
         //this grid contains the table of products and the cart who only shows when state.products is not empty
@@ -96,7 +95,7 @@ const Products = ({ searchText }: ProductsProps) => {
           <ProductsTable
             products={allProducts}
             rowsPerPage={rowsPerPage}
-            searchText={searchText}
+            searchText={search}
           />
         </InfiniteScroll>
       </Grid>
