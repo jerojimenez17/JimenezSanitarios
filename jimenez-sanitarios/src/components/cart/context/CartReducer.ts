@@ -26,7 +26,7 @@ export const CartReducer = (
             if (product.id === action.payload.id) {
               return {
                 ...product,
-                amount: product.amount + 1,
+                amount: product.amount++,
               };
             }
             return product;
@@ -56,7 +56,7 @@ export const CartReducer = (
         ...state,
         products: state.products.map(({ ...product }) => {
           if (product.id === action.payload.id && product.amount > 1) {
-            product.amount--;
+            product.amount = product.amount - 1;
           }
 
           return product;
