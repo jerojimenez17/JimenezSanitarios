@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { KeyboardEventHandler, useState } from 'react';
 
 
 
@@ -59,7 +60,13 @@ interface SearchAppBarProps {
 }
 export default function SearchAppBar({openDrawer, handleSearchText,searchText} : SearchAppBarProps)  {
 
-
+  const [text, setText] = useState("");
+  
+  const handleKeyPress=(e:any)=>{
+    if(e.key === "Enter"){
+      handleSearchText(text);
+    }
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color='inherit'>
@@ -83,9 +90,27 @@ export default function SearchAppBar({openDrawer, handleSearchText,searchText} :
           >
             Jimenez Sanitarios
           </Typography>
-          
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+            onChange={(e)=>{ 
+                setText(e.target.value);
+                console.log(text);
+              } }  
+            onKeyPress={(e:any)=>{ handleKeyPress(e)}}
+            
+            
+
+              placeholder="Buscar..."
+              inputProps={{ 'aria-label': 'buscar' }}
+            />
+          </Search>
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
+
+

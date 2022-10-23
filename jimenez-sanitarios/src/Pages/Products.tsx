@@ -11,7 +11,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Cart from "../components/cart/Cart";
@@ -86,7 +85,7 @@ const Products = () => {
       {
         //this grid contains the table of products and the cart who only shows when state.products is not empty
       }
-      <Grid item xs={8} md={8} >
+      <Grid item xs={8} md={7} >
         <InfiniteScroll
           dataLength={products.length}
           next={loadMore}
@@ -100,7 +99,7 @@ const Products = () => {
           />
         </InfiniteScroll>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={5}>
         <Cart />
       </Grid>
     </Grid>
