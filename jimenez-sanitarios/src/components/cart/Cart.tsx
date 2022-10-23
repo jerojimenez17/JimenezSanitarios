@@ -42,7 +42,10 @@ function Cart() {
         {/* <Typography variant="h3" className="title-card" color="primary" ml={1}>
           Jimenez Sanitarios
           </Typography>  */}
-        <img src={JimenezLogo} alt="Jimenez Sanitarios"/>     
+          <div className="logo">
+
+            <img className='img-logo' src={JimenezLogo} alt="Jimenez Sanitarios"/>     
+          </div>
         <Divider />
     
         {
