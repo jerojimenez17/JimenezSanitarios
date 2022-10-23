@@ -11,6 +11,7 @@ import CartItems from "./CartItems";
 import { Box, Button, Divider, IconButton, Paper, Typography } from "@mui/material";
 import ReactToPrint from "react-to-print";
 import PrintIcon from '@mui/icons-material/Print';
+import JimenezLogo from '../../assets/JimenezLogo.jpeg';
 
 
 function Cart() {
@@ -32,10 +33,10 @@ function Cart() {
     <Box>
 
       <Paper className="itemCart">
-        <Typography variant="h3" className="title-card" color="primary">
+        {/* <Typography variant="h3" className="title-card" color="primary">
           Venta
-          </Typography> 
-      
+          </Typography>  */}
+        <img src={JimenezLogo} alt="Jimenez Sanitarios"/>     
         <Divider />
     
         {
