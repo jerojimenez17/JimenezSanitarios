@@ -9,6 +9,8 @@ export default interface CartContextProps{
     removeUnit: (product: Product) => void;
     removeAll:()=>void;
     removeItem: (product: Product) => void;
+    changePrice: (product: Product) => void;
+    changeAmount: (product: Product) => void;
 }
 
 
