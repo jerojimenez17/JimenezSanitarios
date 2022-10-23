@@ -12,6 +12,7 @@ import { Box, Button, Divider, IconButton, Paper, Typography } from "@mui/materi
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import PrintIcon from '@mui/icons-material/Print';
 import { EditSharp } from "@mui/icons-material";
+import JimenezLogo from '../../assets/WhatsApp-Image-2022-10-21-at-10.38.12.png';
 
 
 function Cart() {
@@ -38,10 +39,13 @@ function Cart() {
       <Paper className="itemCart">
         <Box ref={ref}>
 
-        <Typography variant="h3" className="title-card" color="primary" ml={1}>
+        {/* <Typography variant="h3" className="title-card" color="primary" ml={1}>
           Jimenez Sanitarios
-          </Typography> 
-      
+          </Typography>  */}
+          <div className="logo">
+
+            <img className='img-logo' src={JimenezLogo} alt="Jimenez Sanitarios"/>     
+          </div>
         <Divider />
     
         {
