@@ -21,10 +21,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/api/productos/taladro", (req, res) => {
   const products = readExcelFile(
     4,
-    [0, 1, -1, 5, 7],
+    [0, 1, -1, 5, 4],
     "./excel-files/Taladro.xlsx"
   );
-  res.send(products);
+  console.log(products.map((product) => product.iva));
+  res.send(
+    products.map((product) =>
+      product.iva.toString() == "B"
+        ? {
+            ...product,
+            price: product.price * 1.5,
+          }
+        : product.iva.toString() == "A"
+        ? {
+            ...product,
+            price: product.price * 1.21 * 1.5,
+          }
+        : {
+            ...product,
+            price: product.price * 1.105 * 1.5,
+          }
+    )
+  );
 });
 
 app.get("/api/productos/trebol", (req, res) => {
