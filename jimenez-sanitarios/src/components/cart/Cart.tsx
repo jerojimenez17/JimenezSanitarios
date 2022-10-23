@@ -12,7 +12,7 @@ import { Box, Button, Divider, IconButton, Paper, Typography } from "@mui/materi
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import PrintIcon from '@mui/icons-material/Print';
 import { EditSharp } from "@mui/icons-material";
-import JimenezLogo from '../../assets/JimenezLogo.jpeg';
+import JimenezLogo from '../../assets/WhatsApp-Image-2022-10-21-at-10.38.12.png';
 
 
 function Cart() {
