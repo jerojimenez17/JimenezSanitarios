@@ -44,22 +44,34 @@ demo-simple-select-helper{
 .img-logo{
   display:none;
   width: 100%;
-  height:15vh;
+  height:13vh;
+}
+.date-customer-container{
+  margin-left: 2rem;
+}
+.date{
+  font-weight: bolder;
+  display:none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.cart-row{
+  height: 0.5rem;
+
 }
+
+
+
+
 @media print {
   .logo{
     display: flex;
+    width: 50%;
   }
   .img-logo{
     display: inline;
+  }
+  .date{
+    
+  display:inline;
   }
 }

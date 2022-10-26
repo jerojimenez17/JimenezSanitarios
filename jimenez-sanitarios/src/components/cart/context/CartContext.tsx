@@ -11,6 +11,8 @@ export default interface CartContextProps{
     removeItem: (product: Product) => void;
     changePrice: (product: Product) => void;
     changeAmount: (product: Product) => void;
+    total: ()=> void;
+    discount: (disc:number) => void;
 }
 
 

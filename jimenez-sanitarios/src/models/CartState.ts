@@ -1,7 +1,7 @@
-
 import Product from "./Product";
 
 export default interface CartState {
-    products: Product[];
-
+  products: Product[];
+  total: number;
+  totalWithDiscount: number;
 }

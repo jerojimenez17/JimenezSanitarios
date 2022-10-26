@@ -24,16 +24,15 @@ interface props {
 }
 
 const CartItems = ({ edit }: props) => {
-  const { cartState, addUnit, removeUnit, removeItem, changePrice, changeAmount} =
+  const { cartState, addUnit, removeUnit, removeItem, changePrice, changeAmount,total,discount} =
     useContext(CartContext);
   const { products } = cartState;
   const [rowsPerPage, setRowsPerPage] = useState(100);
   const [isInfiniteDisabled, setInfiniteDisabled] = useState(false);
   const [newPrice, setNewPrice] = useState<Number>();
   const [newAmount, setNewAmount] = useState<Number>();
-  useEffect(() => {
-    console.log(cartState);
-  }, [cartState]);
+
+
 
   const handleAddItem = (producto: Product) => {
     addUnit(producto);
@@ -70,12 +69,14 @@ const CartItems = ({ edit }: props) => {
       </TableHead>
 
       {cartState.products.map((producto: Product, id: number) => (
-        <TableRow key={producto.id} className="fila">
+        <TableRow key={producto.id} className="cart-row">
           <TableCell className="description">{producto.description}</TableCell>
           <TableCell className="marca">{producto.brand}</TableCell>
           {edit ? (
-            <TableCell>
+            <TableCell >
               <TextField
+                size="small"
+                className="input-edit-amount"
                 placeholder={producto.amount.toString()}
                 onKeyPress={(e: any) => {
                   handleEditAmount(e, producto);
@@ -89,8 +90,10 @@ const CartItems = ({ edit }: props) => {
             <TableCell className="cantidad"> {producto.amount}</TableCell>
           )}
           {edit ? (
-            <TableCell>
+            <TableCell >
               <TextField
+              size="small"
+                className="input-edit-price"
                 onKeyPress={(e: any) => {
                   handleEditPrice(e, producto);
                 }}
@@ -103,22 +106,27 @@ const CartItems = ({ edit }: props) => {
           ) : (
             <TableCell>{"$" + Number(producto.price).toFixed()}</TableCell>
           )}
-          <TableCell className="SubTotal"> {(producto.amount * producto.price).toFixed()}</TableCell>
+          <TableCell className="SubTotal"> ${(producto.amount * producto.price).toFixed()}</TableCell>
           {edit && (
-            <Box>
+            <Box display='flex' flexDirection='column' justifyContent='space-around'>
               <IconButton
+                size="small"
                 aria-label="addItem"
                 onClick={() => handleAddItem(producto)}
               >
                 <AddCircle />
               </IconButton>
               <IconButton
+              
+              size="small"
                 aria-label="removeUnit"
                 onClick={() => handleRemoveUnit(producto)}
               >
                 <RemoveCircle />
               </IconButton>
               <IconButton
+              
+              size="small"
                 aria-label="removeItem"
                 onClick={() => handleRemoveItem(producto)}
               >

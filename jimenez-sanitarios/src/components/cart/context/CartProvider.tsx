@@ -8,6 +8,8 @@ import ProductsTable from "../../ProductsTable/ProductsTable";
 
 const INITIAL_STATE: CartState = {
   products: [],
+  total: 0,
+  totalWithDiscount:0
 };
 
 interface props {
@@ -59,6 +61,19 @@ const CartProvider = ({ children }: props) => {
       payload: product,
     });
   };
+  const total = () => {
+    dispatch({
+      type: "total",
+      payload: null,
+    });
+  };
+  const discount = (disc: number) => {
+    dispatch({
+      type: "discount",
+      payload: disc,
+    });
+  };
+
   const values = {
     cartState: cartState,
     addItem: addItem,
@@ -68,6 +83,8 @@ const CartProvider = ({ children }: props) => {
     removeAll: removeAll,
     changePrice: changePrice,
     changeAmount: changeAmount,
+    total:total,
+    discount:discount,
   };
   return (
     <CartContext.Provider

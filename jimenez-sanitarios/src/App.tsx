@@ -15,7 +15,7 @@ import {
 import { useState, useContext } from "react";
 import LeftDrawer from "./components/LeftDrawer";
 import { Router } from "express";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Products from "./Pages/Products";
 import CartProvider from "./components/cart/context/CartProvider";
 
@@ -42,6 +42,7 @@ function App() {
               path="/products"
               element={<Products />}
             />
+            <Route path="*" element={<Navigate to='/products' />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
