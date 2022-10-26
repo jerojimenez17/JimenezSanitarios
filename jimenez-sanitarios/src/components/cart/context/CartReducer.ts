@@ -11,7 +11,9 @@ type CartAction =
   | { type: "updateAmount"; payload: { id: string } }
   | { type: "updateTotal"; payload: Product }
   | { type: "changePrice"; payload: Product }
-  | { type: "changeAmount"; payload: Product };
+  | { type: "changeAmount"; payload: Product }
+  | { type: "total"; payload: null }
+  | { type: "discount"; payload: number };
 
 export const CartReducer = (
   state: CartState,
@@ -95,6 +97,19 @@ export const CartReducer = (
 
           return product;
         }),
+      };
+    case "total":
+      return {
+        ...state,
+        total: state.products.reduce(
+          (acc, cur) => acc + cur.price * cur.amount,
+          0
+        ),
+      };
+    case "discount":
+      return {
+        ...state,
+        totalWithDiscount: state.total - state.total * action.payload * 0.01,
       };
     // case 'updateAmount':
     //     return {

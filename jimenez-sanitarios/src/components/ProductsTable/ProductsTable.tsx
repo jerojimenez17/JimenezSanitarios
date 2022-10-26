@@ -1,5 +1,7 @@
 import {
+  Box,
   IconButton,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -32,6 +34,8 @@ const ProductsTable = ({
   const { addItem } = useContext(CartContext);
   
   return (
+    <Paper>
+      <Box>
     <Table style={{ }}>
       {/* TO-DO: Maybe could create a component for the table header
       TO-DO: create class style for TableCell component*/}
@@ -47,22 +51,22 @@ const ProductsTable = ({
       <TableBody>
         {/* 
          Maybe could create a product table body component
-         TO-DO: create a component to show the product, for example ProductItem and it will contain the TableCell*/}
+        TO-DO: create a component to show the product, for example ProductItem and it will contain the TableCell*/}
         {products
           .filter((product: Product) => {
             return (
               product.description
-                .toString()
-                .toLocaleLowerCase()
-                .includes(searchText.toLowerCase()) ||
+              ?.toString()
+              .toLocaleLowerCase()
+              .includes(searchText.toLowerCase()) ||
               product.cod
-                ?.toString()
-                .toLocaleLowerCase()
-                .includes(searchText.toLowerCase()) ||
+              ?.toString()
+              .toLocaleLowerCase()
+              .includes(searchText.toLowerCase()) ||
               product.brand
-                ?.toString()
-                .toLocaleLowerCase()
-                .includes(searchText.toLowerCase())
+              ?.toString()
+              .toLocaleLowerCase()
+              .includes(searchText.toLowerCase())
             );
           })
 
@@ -72,22 +76,24 @@ const ProductsTable = ({
               <TableCell>{product.cod}</TableCell>
               <TableCell>{product.description}</TableCell>
               <TableCell>{product.brand}</TableCell>
-              <TableCell>{`$${product.price.toFixed(2)}`}</TableCell>
+              <TableCell>{`$${product.price.toFixed()}`}</TableCell>
               <TableCell>
                 {/* TO-DO: add styles to buttons and textfield */}
                 <IconButton>
                   <RemoveCircleIcon color="error"/>
                 </IconButton>
-                <IconButton>
-                  <AddCircleIcon color="success" onClick={() => {
+                <IconButton onClick={() => {
                     addItem(product)
-                  }}/>
+                  }}>
+                  <AddCircleIcon color="success" />
                 </IconButton>
                 </TableCell>
             </TableRow>
           ))}
       </TableBody>
     </Table>
+    </Box>
+    </Paper>
   );
 };
 

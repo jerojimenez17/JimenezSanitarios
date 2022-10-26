@@ -19,7 +19,7 @@ import Product from "../models/Product";
 import fetchProducts from "../services/ProductService";
 
 const Products = () => {
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [hasMore, setHasMore] = useState(true);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -47,7 +47,16 @@ const Products = () => {
     }
     
   };
-
+  const handleKeyPress = (e:any) => {
+    if(e.key ==='Enter'){
+      setSearch(e.target.value);
+    }
+  }
+  const handleSearch = (e:any) => {
+    if(e.target.value === ""){
+      setSearch("");
+    }
+  }
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -76,11 +85,13 @@ const Products = () => {
             <MenuItem value="cerrajeria">Cerrajeria</MenuItem>
             <MenuItem value="trebol">Trebol</MenuItem>
             <MenuItem value="nexo">Nexo</MenuItem>
+            <MenuItem value="foxs">Foxs</MenuItem>
+            <MenuItem value="ciardi">Ciardi</MenuItem>
           </Select>
         </FormControl>
         {/* </Box>
         </Box> */}
-      <TextField sx={{display:'flex',justifyContent: 'flex-start', maxWidth:'60%',ml:3}} variant="standard" label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
+      <TextField sx={{display:'flex',justifyContent: 'flex-start', maxWidth:'55%',ml:3}} variant="standard" label="Buscar"  onKeyDown={handleKeyPress} onChange={handleSearch} />
       </Grid>
       {
         //this grid contains the table of products and the cart who only shows when state.products is not empty
