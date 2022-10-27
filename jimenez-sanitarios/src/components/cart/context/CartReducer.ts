@@ -13,7 +13,8 @@ type CartAction =
   | { type: "changePrice"; payload: Product }
   | { type: "changeAmount"; payload: Product }
   | { type: "total"; payload: null }
-  | { type: "discount"; payload: number };
+  | { type: "discount"; payload: number }
+  | { type: "clientName"; payload: string };
 
 export const CartReducer = (
   state: CartState,
@@ -111,19 +112,11 @@ export const CartReducer = (
         ...state,
         totalWithDiscount: state.total - state.total * action.payload * 0.01,
       };
-    // case 'updateAmount':
-    //     return {
-    //         ...state,
-    //         products: {...PROstate.products.map(product => {
-    //             if(product.id === Number( action.payload.id)){
-    //                 state.amount = state.amount + 1;
-    //                 state.total = state.total + parseFloat(product.price);
-    //                 return
-    //             }
-    //             re}turn product;
-    //         }),
-    //     }
-
+    case "clientName":
+      return {
+        ...state,
+        client: action.payload,
+      };
     default:
       return state;
   }

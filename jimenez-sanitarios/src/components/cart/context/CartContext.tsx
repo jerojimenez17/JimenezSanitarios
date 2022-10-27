@@ -13,6 +13,7 @@ export default interface CartContextProps{
     changeAmount: (product: Product) => void;
     total: ()=> void;
     discount: (disc:number) => void;
+    clientName: (name:string) => void;
 }
 
 

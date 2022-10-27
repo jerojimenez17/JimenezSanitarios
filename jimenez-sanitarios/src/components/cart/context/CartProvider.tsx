@@ -9,7 +9,8 @@ import ProductsTable from "../../ProductsTable/ProductsTable";
 const INITIAL_STATE: CartState = {
   products: [],
   total: 0,
-  totalWithDiscount:0
+  totalWithDiscount:0,
+  client:''
 };
 
 interface props {
@@ -73,6 +74,12 @@ const CartProvider = ({ children }: props) => {
       payload: disc,
     });
   };
+  const clientName =(name: string) => {
+    dispatch({
+      type: "clientName",
+      payload: name,
+    });
+  };
 
   const values = {
     cartState: cartState,
@@ -85,6 +92,7 @@ const CartProvider = ({ children }: props) => {
     changeAmount: changeAmount,
     total:total,
     discount:discount,
+    clientName: clientName
   };
   return (
     <CartContext.Provider

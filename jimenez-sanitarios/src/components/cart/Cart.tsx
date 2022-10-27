@@ -4,6 +4,7 @@ import CartProvider from "./context/CartProvider";
 import { CartContext } from "./context/CartContext";
 import CartItem from "./CartItems";
 import CartItems from "./CartItems";
+import AddReactionRoundedIcon from '@mui/icons-material/AddReactionRounded';
 import {
   Box,
   Button,
@@ -26,7 +27,7 @@ function Cart() {
   const [amount, setAmount] = useState<number>(0);
   const [suma, setSuma] = useState(0);
   const [fecha, setFecha] = useState<Date>();
-  const { cartState, removeAll,discount,total } = useContext(CartContext);
+  const { cartState, removeAll,discount,total,clientName } = useContext(CartContext);
   const [discountState, setDiscountState] = useState(0);
   useEffect(() => {
     const hoy = Date.now();
@@ -40,7 +41,7 @@ function Cart() {
     discount(discountState);
   }, [cartState.products, discountState]);
 
-
+  
   const handleDeleteAll = () => {
     removeAll();
   };
@@ -48,6 +49,12 @@ function Cart() {
   const handlePrint = useReactToPrint({
     content: () => ref.current,
   });
+  // useEffect(() => {
+  //   setTimeout(() =>{
+  //   clientName("");}
+  //   ,500);
+  // },[handlePrint]);
+  
 
   const handleDiscount = (e: any) => {
     if (e.key === "Enter") {
@@ -56,7 +63,13 @@ function Cart() {
       discount(discountState);
     }
   };
+  const [focus,setFocus] = useState(true);
   const [edit, setEdit] = useState<boolean>(false);
+  const handleClient = (e: any) => {
+    if(e.key === "Enter"){
+      clientName(e.target.value);
+    }
+  }
   return (
     <Box>
       <Paper className="itemCart">
@@ -76,6 +89,12 @@ function Cart() {
               <Typography variant="h6" className="date">
                 Fecha: {fecha?.toLocaleDateString()}   { fecha?.toLocaleTimeString()}
               </Typography>
+              {
+                (cartState.client!=="") &&
+              (<Typography className="customer" variant="h6">
+                Cliente: {cartState.client}
+              </Typography>)
+              }
             </div>
           </Box>
 
@@ -86,7 +105,7 @@ function Cart() {
           <Box display="flex" flexDirection='row' justifyContent="space-between" mt={2}>
           
             {edit? (
-              <FormControl sx={{ m: 1, width: '10ch' }} variant="filled">
+              <FormControl sx={{ m: 1, width: '10ch' }} variant="standard">
           <FilledInput
             id="filled-adornment"
             onKeyDown={handleDiscount}
@@ -97,6 +116,7 @@ function Cart() {
             }}
           />
           <FormHelperText id="filled-weight-helper-text">Descuento</FormHelperText>
+          <TextField variant='standard' label='Cliente' placeholder={cartState.client} aria-label='cliente' onKeyDown={handleClient}/>
           </FormControl>
             ):
             (<Box ml={2}>
@@ -138,6 +158,7 @@ function Cart() {
           <IconButton onClick={handlePrint} onClickCapture={() => {edit && setEdit(!edit)}}>
             <PrintIcon />
           </IconButton>
+          
         </Box>
       </Paper>
     </Box>
