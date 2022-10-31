@@ -5,4 +5,5 @@ export default interface CartState {
   total: number;
   totalWithDiscount: number;
   client: string;
+  date?: Date;
 }

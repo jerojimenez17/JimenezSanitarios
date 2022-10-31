@@ -21,7 +21,9 @@ import {
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
 import { EditSharp } from "@mui/icons-material";
-import JimenezLogo from "../../assets/WhatsApp-Image-2022-10-21-at-10.38.12.png";
+import { db } from "../../services/FireBase";
+import { addDoc, collection } from "firebase/firestore";
+// import JimenezLogo from "../../assets/logo";
 
 function Cart() {
   const [amount, setAmount] = useState<number>(0);
@@ -30,9 +32,6 @@ function Cart() {
   const { cartState, removeAll,discount,total,clientName } = useContext(CartContext);
   const [discountState, setDiscountState] = useState(0);
   useEffect(() => {
-    const hoy = Date.now();
-    setFecha(new Date(hoy));
-    console.log(cartState);
     discount(discountState);
   }, []);
   
@@ -49,6 +48,12 @@ function Cart() {
   const handlePrint = useReactToPrint({
     content: () => ref.current,
   });
+  useEffect(() => {
+    
+    const hoy = Date.now();
+    setFecha(new Date(hoy));
+  },[handlePrint]);
+  
   // useEffect(() => {
   //   setTimeout(() =>{
   //   clientName("");}
@@ -70,6 +75,14 @@ function Cart() {
       clientName(e.target.value);
     }
   }
+  const collectionRef = collection(db,'sales');
+  const handleSaveSale = ()=> {
+    addDoc(collectionRef, 
+      cartState)
+    
+      removeAll();
+  }
+
   return (
     <Box>
       <Paper className="itemCart">
@@ -81,7 +94,7 @@ function Cart() {
             <div className="logo">
               <img
                 className="img-logo"
-                src={JimenezLogo}
+                
                 alt="Jimenez Sanitarios"
               />
             </div>
@@ -106,6 +119,7 @@ function Cart() {
           
             {edit? (
               <FormControl sx={{ m: 1, width: '10ch' }} variant="standard">
+              <TextField variant='standard' label='Cliente' placeholder={cartState.client} aria-label='cliente' onKeyDown={handleClient}/>
           <FilledInput
             id="filled-adornment"
             onKeyDown={handleDiscount}
@@ -116,7 +130,6 @@ function Cart() {
             }}
           />
           <FormHelperText id="filled-weight-helper-text">Descuento</FormHelperText>
-          <TextField variant='standard' label='Cliente' placeholder={cartState.client} aria-label='cliente' onKeyDown={handleClient}/>
           </FormControl>
             ):
             (<Box ml={2}>
@@ -146,7 +159,7 @@ function Cart() {
         </Box>
         <Divider />
         <Box display="flex" justifyContent="space-around" alignItems="center">
-          <Button color="success" variant="contained" onClick={handleDeleteAll}>
+          <Button color="success" variant="contained" onClick={handleSaveSale} >
             Vender
           </Button>
           <Button variant="outlined" color="secondary" disabled>

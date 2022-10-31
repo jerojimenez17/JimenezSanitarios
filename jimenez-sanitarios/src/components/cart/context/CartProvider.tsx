@@ -10,7 +10,7 @@ const INITIAL_STATE: CartState = {
   products: [],
   total: 0,
   totalWithDiscount:0,
-  client:''
+  client:'',
 };
 
 interface props {
