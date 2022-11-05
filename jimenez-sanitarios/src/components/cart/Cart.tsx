@@ -77,14 +77,14 @@ function Cart() {
           {/* <Typography variant="h3" className="title-card" color="primary" ml={1}>
           Jimenez Sanitarios
           </Typography>  */}
-          <Box display="flex">
-            <div className="logo">
+          <Box display="flex" m={4}>
+            <Box className="logo">
               <img
                 className="img-logo"
                 src={JimenezLogo}
                 alt="Jimenez Sanitarios"
               />
-            </div>
+            </Box>
             <div className="date-customer-container">
               <Typography variant="h6" className="date">
                 Fecha: {fecha?.toLocaleDateString()}   { fecha?.toLocaleTimeString()}
@@ -128,7 +128,7 @@ function Cart() {
                 variant="h5"
                 className="title-card"
                 color="primary"
-                mr={1}
+                mr={3}
               >
                 Total: ${cartState.total.toFixed()}
               </Typography>{( discountState!==0)&&
@@ -136,7 +136,7 @@ function Cart() {
                 variant="h5"
                 className="title-card"
                 color="primary"
-                mr={1}
+                mr={3}
               >
                 Total con Descuento: ${cartState.totalWithDiscount.toFixed()}
               </Typography>
