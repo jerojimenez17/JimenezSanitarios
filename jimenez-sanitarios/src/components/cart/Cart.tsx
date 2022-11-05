@@ -91,13 +91,13 @@ function Cart() {
           Jimenez Sanitarios
           </Typography>  */}
           <Box display="flex">
-            <div className="logo">
+            <Box className="logo">
               <img
                 className="img-logo"
                 
                 alt="Jimenez Sanitarios"
               />
-            </div>
+            </Box>
             <div className="date-customer-container">
               <Typography variant="h6" className="date">
                 Fecha: {fecha?.toLocaleDateString()}   { fecha?.toLocaleTimeString()}
