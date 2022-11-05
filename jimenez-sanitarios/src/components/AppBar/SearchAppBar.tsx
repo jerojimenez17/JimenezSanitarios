@@ -95,7 +95,7 @@ export default function SearchAppBar({
           >
             Jimenez Sanitarios
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -110,7 +110,7 @@ export default function SearchAppBar({
               placeholder="Buscar..."
               inputProps={{ "aria-label": "buscar" }}
             />
-          </Search>
+          </Search> */}
         </Toolbar>
       </AppBar>
     </Box>
