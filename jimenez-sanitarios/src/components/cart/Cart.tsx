@@ -58,8 +58,12 @@ function Cart() {
 
   const handleDiscount = (e: any) => {
     if (e.key === "Enter") {
-      console.log(e.target.value);
-      setDiscountState(e.target.value);
+      if(e.target.value ==="" || e.target.value ==="0"){
+
+        setDiscountState(0);
+      }else{
+        setDiscountState(e.target.value);
+      }
       discount(discountState);
     }
   };
