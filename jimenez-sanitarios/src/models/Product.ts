@@ -6,4 +6,5 @@ export default interface Product {
   brand: String;
   price: number;
   amount: number;
+  search?: number;
 }

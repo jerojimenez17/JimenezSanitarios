@@ -14,6 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Cart from "../components/cart/Cart";
+import ProductGrid from "../components/ProductsTable/ProductGrid";
 import ProductsTable from "../components/ProductsTable/ProductsTable";
 import Product from "../models/Product";
 import fetchProducts from "../services/ProductService";
@@ -24,7 +25,7 @@ const Products = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [productsListName, setProductListName] = useState<string>("taladro");
-  const [search,setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
   useEffect(() => {
     fetchProducts(productsListName).then((productsWS: Product[]) =>
       setAllProducts(productsWS)
@@ -36,27 +37,23 @@ const Products = () => {
   }, [allProducts, rowsPerPage]);
 
   const loadMore = () => {
-     
-    if(rowsPerPage + 10 < allProducts.length){
-    
-    setRowsPerPage(rowsPerPage + 10);
-    console.log(rowsPerPage);
-    }
-    else{
+    if (rowsPerPage + 10 < allProducts.length) {
+      setRowsPerPage(rowsPerPage + 10);
+      console.log(rowsPerPage);
+    } else {
       setHasMore(false);
     }
-    
   };
-  const handleKeyPress = (e:any) => {
-    if(e.key ==='Enter'){
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter") {
       setSearch(e.target.value);
     }
-  }
-  const handleSearch = (e:any) => {
-    if(e.target.value === ""){
+  };
+  const handleSearch = (e: any) => {
+    if (e.target.value === "") {
       setSearch("");
     }
-  }
+  };
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -67,7 +64,16 @@ const Products = () => {
             flexDirection="row"
             justifyContent="space-between"
           > */}
-        <FormControl color="primary" focused sx={{ m: "1rem", minWidth: 200, display:"flex", justifyContent:"center" }}>
+        <FormControl
+          color="primary"
+          focused
+          sx={{
+            m: "1rem",
+            minWidth: 200,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <InputLabel color="primary" id="demo-simple-select-helper-label">
             Listas
           </InputLabel>
@@ -91,13 +97,24 @@ const Products = () => {
         </FormControl>
         {/* </Box>
         </Box> */}
-      <TextField sx={{display:'flex',justifyContent: 'flex-start', maxWidth:'55%',ml:3}} variant="standard" label="Buscar"  onKeyDown={handleKeyPress} onChange={handleSearch} />
+        <TextField
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            maxWidth: "55%",
+            ml: 3,
+          }}
+          variant="standard"
+          label="Buscar"
+          onKeyDown={handleKeyPress}
+          onChange={handleSearch}
+        />
       </Grid>
       {
         //this grid contains the table of products and the cart who only shows when state.products is not empty
       }
-      <Grid item xs={8} md={7} >
-        <InfiniteScroll
+      <Grid item xs={8} md={7}>
+        {/* <InfiniteScroll
           dataLength={products.length}
           next={loadMore}
           hasMore={hasMore}
@@ -108,7 +125,25 @@ const Products = () => {
             rowsPerPage={rowsPerPage}
             searchText={search}
           />
-        </InfiniteScroll>
+        </InfiniteScroll> */}
+        <ProductGrid
+          products={allProducts.filter((product) => {
+            return (
+              product.description
+                ?.toString()
+                .toLocaleLowerCase()
+                .includes(search.toLowerCase()) ||
+              product.cod
+                ?.toString()
+                .toLocaleLowerCase()
+                .includes(search.toLowerCase()) ||
+              product.brand
+                ?.toString()
+                .toLocaleLowerCase()
+                .includes(search.toLowerCase())
+            );
+          })}
+        />
       </Grid>
       <Grid item xs={12} md={5}>
         <Cart />

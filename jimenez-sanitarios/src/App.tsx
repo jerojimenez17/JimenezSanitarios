@@ -18,7 +18,7 @@ import { Router } from "express";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Products from "./Pages/Products";
 import CartProvider from "./components/cart/context/CartProvider";
-import Bill from "./Pages/Bill";
+import Counts from "./Pages/Counts";
 
 function App() {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -39,15 +39,9 @@ function App() {
         <LeftDrawer open={openDrawer} onClose={handleOpenDrawer} />
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/products"
-              element={<Products />}
-            />
-             <Route
-              path="/bill"
-              element={<Bill />}
-            />
-            <Route path="*" element={<Navigate to='/products' />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/counts" element={<Counts />} />
+            <Route path="*" element={<Navigate to="/products" />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>

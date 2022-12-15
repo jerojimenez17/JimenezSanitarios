@@ -2,7 +2,15 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-import { getFirestore } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  collection,
+  getDocs,
+  DocumentData,
+} from "firebase/firestore";
+import CartState from "../models/CartState";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,3 +32,33 @@ export const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 export const db = getFirestore(app);
+
+export const fetchSales = async () => {
+  const collectionRef = collection(db, "sales");
+  let sales: DocumentData[] = [];
+  const docSnap = await getDocs(collectionRef);
+  let s: CartState | DocumentData = {
+    id: 0,
+    products: [],
+    client: "",
+    total: 0,
+    totalWithDiscount: 0,
+  };
+  docSnap.docs.forEach((doc) => {
+    console.log(doc.data());
+    s = doc.data();
+    s.id = doc.id;
+    console.log(s.id);
+    s.products = doc.data().products;
+    s.client = doc.data().client;
+    s.total = doc.data().total;
+    s.totalWithDiscount = doc.data().total4WithDiscount;
+    sales.push(s);
+    console.log(sales);
+  });
+  if (sales.length > 0) {
+    return sales;
+  } else {
+    return null;
+  }
+};

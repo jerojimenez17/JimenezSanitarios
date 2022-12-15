@@ -59,9 +59,14 @@ demo-simple-select-helper{
 
 }
 
+.client-name:hover{
+  color: #61dafb;
 
+}
+.header-grid:hover{
+  color: #61dafb;
 
-
+}
 @media print {
   .logo{
     display: flex;
@@ -73,5 +78,9 @@ demo-simple-select-helper{
   .date{
     
   display:inline;
+  }
+  .container-cart{
+    
+    height:80vh;
   }
 }
