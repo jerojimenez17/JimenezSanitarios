@@ -19,19 +19,20 @@ const ProductGrid = ({ products }: propsGrid) => {
       headerName: "Codigo",
       headerClassName: "header-grid",
       width: 120,
+      minWidth: 60,
     },
     {
       field: "description",
       headerName: "Descripcion",
       headerClassName: "header-grid",
-      width: 450,
+      width: 700,
       editable: true,
     },
     {
       field: "brand",
       headerName: "Marca",
       headerClassName: "header-grid",
-      width: 180,
+      width: 250,
       editable: true,
     },
     {
@@ -52,15 +53,16 @@ const ProductGrid = ({ products }: propsGrid) => {
   }, [selectionModel, setSelectionModel]);
 
   return (
-    <div style={{ height: "73vh", width: "100%" }}>
+    <div style={{ height: "70vh", width: "100%" }}>
       <DataGrid
         sx={{
           boxShadow: 2,
         }}
         className="products-grid"
+        density="compact"
         rows={products}
         columns={columns}
-        pageSize={9}
+        pageSize={11}
         onSelectionModelChange={(ids) => {
           const selectedIDs = new Set(ids);
           const selectedRowData = products

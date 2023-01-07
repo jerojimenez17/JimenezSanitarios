@@ -19,7 +19,10 @@ import ProductsTable from "../components/ProductsTable/ProductsTable";
 import Product from "../models/Product";
 import fetchProducts from "../services/ProductService";
 
-const Products = () => {
+interface ProductProps {
+  openCart: boolean;
+}
+const Products = ({ openCart }: ProductProps) => {
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [hasMore, setHasMore] = useState(true);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -68,8 +71,9 @@ const Products = () => {
           color="primary"
           focused
           sx={{
-            m: "1rem",
+            m: "2rem",
             minWidth: 200,
+            height: "2rem",
             display: "flex",
             justifyContent: "center",
           }}
@@ -113,7 +117,7 @@ const Products = () => {
       {
         //this grid contains the table of products and the cart who only shows when state.products is not empty
       }
-      <Grid item xs={8} md={7}>
+      <Grid item xs={12} md={openCart ? 6 : 12}>
         {/* <InfiniteScroll
           dataLength={products.length}
           next={loadMore}
@@ -145,7 +149,12 @@ const Products = () => {
           })}
         />
       </Grid>
-      <Grid item xs={12} md={5}>
+      <Grid
+        item
+        xs={openCart ? 12 : 0}
+        md={openCart ? 6 : 0}
+        hidden={!openCart}
+      >
         <Cart />
       </Grid>
     </Grid>
