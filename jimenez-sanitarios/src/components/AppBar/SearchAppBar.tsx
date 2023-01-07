@@ -8,7 +8,11 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { KeyboardEventHandler, useState } from "react";
+import { KeyboardEventHandler, useContext, useState } from "react";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { grey } from "@mui/material/colors";
+import { Badge } from "@mui/material";
+import { CartContext } from "../cart/context/CartContext";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -55,12 +59,18 @@ interface SearchAppBarProps {
   openDrawer: () => void;
   handleSearchText: (text: string) => void;
   searchText: string;
+  setOpenCart: (value: boolean) => void;
+  openCart: boolean;
 }
 export default function SearchAppBar({
   openDrawer,
   handleSearchText,
   searchText,
+  setOpenCart,
+  openCart,
 }: SearchAppBarProps) {
+  const { cartState } = useContext(CartContext);
+
   const [text, setText] = useState("");
 
   const handleKeyPress = (e: any) => {
@@ -111,6 +121,16 @@ export default function SearchAppBar({
               inputProps={{ "aria-label": "buscar" }}
             />
           </Search> */}
+          <IconButton
+            color={openCart ? "primary" : "default"}
+            onClick={(e) => {
+              setOpenCart(!openCart);
+            }}
+          >
+            <Badge badgeContent={cartState.products.length} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
         </Toolbar>
       </AppBar>
     </Box>
