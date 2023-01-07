@@ -52,7 +52,7 @@ const ProductGrid = ({ products }: propsGrid) => {
   }, [selectionModel, setSelectionModel]);
 
   return (
-    <div style={{ height: 500, width: "100%" }}>
+    <div style={{ height: "73vh", width: "100%" }}>
       <DataGrid
         sx={{
           boxShadow: 2,
@@ -60,7 +60,7 @@ const ProductGrid = ({ products }: propsGrid) => {
         className="products-grid"
         rows={products}
         columns={columns}
-        pageSize={20}
+        pageSize={9}
         onSelectionModelChange={(ids) => {
           const selectedIDs = new Set(ids);
           const selectedRowData = products

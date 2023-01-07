@@ -9,8 +9,12 @@ import {
   collection,
   getDocs,
   DocumentData,
+  updateDoc,
+  arrayUnion,
+  documentId,
 } from "firebase/firestore";
 import CartState from "../models/CartState";
+import Product from "../models/Product";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -61,4 +65,16 @@ export const fetchSales = async () => {
   } else {
     return null;
   }
+};
+
+export const addProductsToClient = async (
+  document: DocumentData,
+  newProducts: Product[]
+) => {
+  const collectionRef = collection(db, "sales");
+  const docRef = doc(db, `${document.id}`);
+  console.log(docRef);
+  await updateDoc(docRef, {
+    products: newProducts,
+  });
 };

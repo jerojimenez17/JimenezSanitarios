@@ -47,7 +47,7 @@ const Counts = () => {
     };
 
   return (
-    <Box mt={2}>
+    <Box mt={2} ml="2rem" mr="2rem" maxWidth={"50"}>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
@@ -71,9 +71,11 @@ const Counts = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sales?.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
+            {sales
+              ?.sort((a, b) => a.date - b.date)
+              .map((row) => (
+                <Row key={row.name} row={row} />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

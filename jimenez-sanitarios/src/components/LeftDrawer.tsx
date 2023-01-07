@@ -39,7 +39,7 @@ const LeftDrawer = ({ open, onClose }: LeftDrawerProps) => {
         </Link>
         <Divider variant="middle" />
 
-        <Link href="/bill" sx={{ textDecoration: "none" }}>
+        <Link href="/counts" sx={{ textDecoration: "none" }}>
           <ListItem>
             <ListItemIcon>
               <LocalLibraryIcon color="error" />

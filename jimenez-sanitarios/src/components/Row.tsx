@@ -2,6 +2,7 @@ import {
   Box,
   Collapse,
   IconButton,
+  Paper,
   Tab,
   Table,
   TableBody,
@@ -56,9 +57,10 @@ const Row = ({ row }: rowProps) => {
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1, backgroundColor: "#f0f0f0" }}>
+          <Collapse in={open} timeout="auto" unmountOnExit component={Paper}>
+            <Box sx={{ margin: 1, backgroundColor: "#f0f0f0", boxShadow: 2 }}>
               <Typography
+                m={2}
                 variant="h6"
                 gutterBottom
                 component="div"

@@ -8,6 +8,7 @@ import AddReactionRoundedIcon from "@mui/icons-material/AddReactionRounded";
 import {
   Box,
   Button,
+  Container,
   Divider,
   FilledInput,
   FormControl,
@@ -24,6 +25,7 @@ import { EditSharp } from "@mui/icons-material";
 import { db } from "../../services/FireBase";
 import { addDoc, collection } from "firebase/firestore";
 import CartModal from "./CartModal";
+import CustomerModal from "./CustomerModal";
 // import JimenezLogo from "../../assets/logo";
 
 function Cart() {
@@ -35,12 +37,12 @@ function Cart() {
   const [discountState, setDiscountState] = useState(0);
   useEffect(() => {
     discount(discountState);
-  }, []);
+  }, [discount, discountState]);
 
   useEffect(() => {
     total();
     discount(discountState);
-  }, [cartState.products, discountState]);
+  }, [cartState.products, discount, discountState, total]);
 
   const handleDeleteAll = () => {
     removeAll();
@@ -62,14 +64,18 @@ function Cart() {
 
   const handleDiscount = (e: any) => {
     if (e.key === "Enter") {
-      console.log(e.target.value);
-      setDiscountState(e.target.value);
+      if (e.target.value === "" || e.target.value === "0") {
+        setDiscountState(0);
+      } else {
+        setDiscountState(e.target.value);
+      }
       discount(discountState);
     }
   };
   const [focus, setFocus] = useState(true);
   const [edit, setEdit] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openCustomerModal, setOpenCustomerModal] = useState(false);
   const handleClient = (e: any) => {
     if (e.key === "Enter") {
       clientName(e.target.value);
@@ -83,97 +89,111 @@ function Cart() {
 
       cartState.date = new Date(now);
       addDoc(collectionRef, cartState);
-
+      clientName("");
       removeAll();
     }
   };
 
   return (
-    <Box>
-      <Paper className="itemCart">
-        <Box ref={ref}>
+    <Paper className="itemCart">
+      <Box>
+        <Box ref={ref} className="printeable-cart">
           {/* <Typography variant="h3" className="title-card" color="primary" ml={1}>
           Jimenez Sanitarios
           </Typography>  */}
-          <Box display="flex">
-            <Box className="logo">
-              <img className="img-logo" alt="Jimenez Sanitarios" />
-            </Box>
-            <div className="date-customer-container">
-              <Typography variant="h6" className="date">
-                Fecha: {fecha?.toLocaleDateString()}{" "}
-                {fecha?.toLocaleTimeString()}
-              </Typography>
-              {cartState.client !== "" && (
-                <Typography className="customer" variant="h6">
-                  Cliente: {cartState.client}
-                </Typography>
-              )}
-            </div>
-          </Box>
-
-          <Divider />
-          <Box className="container-cart">
-            <CartItems edit={edit} />
-          </Box>
-          <Divider />
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-            mt={2}
-          >
-            {edit ? (
-              <FormControl sx={{ m: 1, width: "10ch" }} variant="standard">
-                <TextField
-                  variant="standard"
-                  label="Cliente"
-                  placeholder={cartState.client}
-                  aria-label="cliente"
-                  onKeyDown={handleClient}
-                />
-                <FilledInput
-                  id="filled-adornment"
-                  onKeyDown={handleDiscount}
-                  endAdornment={
-                    <InputAdornment position="end">%</InputAdornment>
-                  }
-                  aria-describedby="filled-weight-helper-text"
-                  inputProps={{
-                    "aria-label": "descuento",
-                  }}
-                />
-                <FormHelperText id="filled-weight-helper-text">
-                  Descuento
-                </FormHelperText>
-              </FormControl>
-            ) : (
-              <Box ml={2}>
-                <Typography variant="h6">
-                  Descuento: {discountState}%
-                </Typography>
-              </Box>
-            )}
-            <Box>
-              <Typography
-                variant="h5"
-                className="title-card"
-                color="primary"
-                mr={1}
-              >
-                Total: ${cartState.total.toFixed()}
-              </Typography>
-              {discountState !== 0 && (
+          <Box m={1} className="cart">
+            <Box display="flex">
+              <Box className="logo">
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   className="title-card"
                   color="primary"
-                  mr={1}
+                  ml={2}
                 >
-                  Total con Descuento: ${cartState.totalWithDiscount.toFixed()}
+                  Jimenez Sanitarios
                 </Typography>
-              )}
+                {/* <img className="img-logo" alt="Jimenez Sanitarios" /> */}
+              </Box>
+              <div className="date-customer-container">
+                <Typography variant="h6" className="date">
+                  Fecha: {fecha?.toLocaleDateString()}{" "}
+                  {fecha?.toLocaleTimeString()}
+                </Typography>
+                {cartState.client !== "" && (
+                  <Typography className="customer" variant="h6">
+                    Cliente: {cartState.client}
+                  </Typography>
+                )}
+              </div>
+            </Box>
+
+            <Divider />
+            <Box className="products-cart">
+              <CartItems edit={edit} />
+            </Box>
+
+            <Divider />
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              mt={2}
+              className="cart-total-container"
+            >
+              <Box
+                className="cart-total"
+                display="flex"
+                justifyContent="space-between"
+                gap={35}
+              >
+                {edit ? (
+                  <FormControl sx={{ m: 1, width: "20ch" }} variant="standard">
+                    <TextField
+                      variant="standard"
+                      label="Cliente"
+                      placeholder={cartState.client}
+                      aria-label="cliente"
+                      onKeyDown={handleClient}
+                    />
+                    <FilledInput
+                      id="filled-adornment"
+                      onKeyDown={handleDiscount}
+                      endAdornment={
+                        <InputAdornment position="end">%</InputAdornment>
+                      }
+                      aria-describedby="filled-weight-helper-text"
+                      inputProps={{
+                        "aria-label": "descuento",
+                      }}
+                    />
+                    <FormHelperText id="filled-weight-helper-text">
+                      Descuento
+                    </FormHelperText>
+                  </FormControl>
+                ) : (
+                  <Box ml={2} mt={2}>
+                    <Typography variant="h6">
+                      Descuento: {discountState}%
+                    </Typography>
+                  </Box>
+                )}
+                <Box mt={2}>
+                  <Typography variant="h5" color="primary" mr={1} ml={1}>
+                    Total: ${cartState.total.toFixed()}
+                  </Typography>
+                  {discountState !== 0 && (
+                    <Typography
+                      variant="h5"
+                      className="title-card"
+                      color="primary"
+                      mr={1}
+                    >
+                      Total con Descuento: $
+                      {cartState.totalWithDiscount.toFixed()}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -202,8 +222,12 @@ function Cart() {
           </IconButton>
         </Box>
         <CartModal open={openModal} handleClose={() => setOpenModal(false)} />
-      </Paper>
-    </Box>
+        <CustomerModal
+          open={openCustomerModal}
+          handleClose={() => setOpenCustomerModal(false)}
+        />
+      </Box>
+    </Paper>
   );
 }
 

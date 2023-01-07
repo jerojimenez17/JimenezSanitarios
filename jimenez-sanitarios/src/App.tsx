@@ -11,6 +11,7 @@ import {
   ListItemButton,
   IconButton,
   Menu,
+  useMediaQuery,
 } from "@mui/material";
 import { useState, useContext } from "react";
 import LeftDrawer from "./components/LeftDrawer";
@@ -19,6 +20,9 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Products from "./Pages/Products";
 import CartProvider from "./components/cart/context/CartProvider";
 import Counts from "./Pages/Counts";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { esES } from "@mui/x-data-grid";
+import { pink } from "@mui/material/colors";
 
 function App() {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -28,23 +32,43 @@ function App() {
     setOpenDrawer(!openDrawer);
   };
 
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const theme = createTheme(
+    {
+      palette: {
+        // mode: prefersDarkMode ? "dark" : "light",
+        primary: { main: "#1976d2" },
+
+        secondary: pink,
+      },
+    },
+    esES // x-data-grid translations
+  );
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
+
   return (
     <div className="App">
-      <CartProvider>
-        <SearchAppBar
-          openDrawer={handleOpenDrawer}
-          handleSearchText={setSearchText}
-          searchText={searchText}
-        />
-        <LeftDrawer open={openDrawer} onClose={handleOpenDrawer} />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/products" element={<Products />} />
-            <Route path="/counts" element={<Counts />} />
-            <Route path="*" element={<Navigate to="/products" />} />
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
+      <ThemeProvider theme={theme}>
+        <CartProvider>
+          <SearchAppBar
+            openDrawer={handleOpenDrawer}
+            handleSearchText={setSearchText}
+            searchText={searchText}
+          />
+          <LeftDrawer open={openDrawer} onClose={handleOpenDrawer} />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/products" element={<Products />} />
+              <Route path="/counts" element={<Counts />} />
+              <Route path="*" element={<Navigate to="/products" />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </ThemeProvider>
     </div>
   );
 }

@@ -1,15 +1,23 @@
 import {
+  Avatar,
   Backdrop,
   Box,
   Button,
+  Divider,
   Fade,
   List,
   ListItem,
+  ListItemButton,
   Modal,
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import { DocumentData } from "firebase/firestore";
+import React, { useContext, useEffect, useState } from "react";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import { fetchSales, addProductsToClient } from "../../services/FireBase";
+import { green } from "@mui/material/colors";
+import { CartContext } from "./context/CartContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,6 +39,19 @@ export default function TransitionsModal({
   open,
   handleClose,
 }: CartModalProps) {
+  const [counts, setCounts] = useState<DocumentData[] | null>([]);
+
+  useEffect(() => {
+    fetchSales().then((data: DocumentData[] | null) => {
+      setCounts(data);
+    });
+  }, []);
+
+  const { cartState, removeAll, discount, total, clientName } =
+    useContext(CartContext);
+  const addProductsToCount = async (sale: DocumentData) => {
+    await addProductsToClient(document, cartState.products);
+  };
   return (
     <div>
       <Modal
@@ -46,7 +67,19 @@ export default function TransitionsModal({
       >
         <Fade in={open}>
           <Box sx={style}>
-            <List>{<ListItem></ListItem>}</List>
+            <List>
+              {counts?.map((sale) => {
+                return (
+                  <ListItemButton onClick={() => addProductsToCount(sale)}>
+                    <Avatar sx={{ bgcolor: green[500] }}>
+                      <AssignmentIcon />
+                    </Avatar>
+                    <Typography ml={3}>{sale.client}</Typography>
+                  </ListItemButton>
+                );
+              })}
+            </List>
+            <Divider />
           </Box>
         </Fade>
       </Modal>
