@@ -28,6 +28,7 @@ function App() {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const [searchText, setSearchText] = useState("");
+  const [openCart, setOpenCart] = useState(false);
   const handleOpenDrawer = () => {
     setOpenDrawer(!openDrawer);
   };
@@ -55,6 +56,8 @@ function App() {
       <ThemeProvider theme={theme}>
         <CartProvider>
           <SearchAppBar
+            openCart={openCart}
+            setOpenCart={setOpenCart}
             openDrawer={handleOpenDrawer}
             handleSearchText={setSearchText}
             searchText={searchText}
@@ -62,7 +65,10 @@ function App() {
           <LeftDrawer open={openDrawer} onClose={handleOpenDrawer} />
           <BrowserRouter>
             <Routes>
-              <Route path="/products" element={<Products />} />
+              <Route
+                path="/products"
+                element={<Products openCart={openCart} />}
+              />
               <Route path="/counts" element={<Counts />} />
               <Route path="*" element={<Navigate to="/products" />} />
             </Routes>
