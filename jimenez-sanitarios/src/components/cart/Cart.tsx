@@ -1,14 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import Product from "../../models/Product";
-import CartProvider from "./context/CartProvider";
 import { CartContext } from "./context/CartContext";
-import CartItem from "./CartItems";
 import CartItems from "./CartItems";
-import AddReactionRoundedIcon from "@mui/icons-material/AddReactionRounded";
 import {
   Box,
   Button,
-  Container,
   Divider,
   FilledInput,
   FormControl,
@@ -17,11 +12,16 @@ import {
   InputAdornment,
   Paper,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
-import { EditSharp } from "@mui/icons-material";
+import {
+  DeleteForeverSharp,
+  DeleteSharp,
+  EditSharp,
+} from "@mui/icons-material";
 import { db } from "../../services/FireBase";
 import { addDoc, collection } from "firebase/firestore";
 import CartModal from "./CartModal";
@@ -29,8 +29,6 @@ import CustomerModal from "./CustomerModal";
 // import JimenezLogo from "../../assets/logo";
 
 function Cart() {
-  const [amount, setAmount] = useState<number>(0);
-  const [suma, setSuma] = useState(0);
   const [fecha, setFecha] = useState<Date>();
   const { cartState, removeAll, discount, total, clientName } =
     useContext(CartContext);
@@ -144,7 +142,8 @@ function Cart() {
                 className="cart-total"
                 display="flex"
                 justifyContent="space-between"
-                gap={35}
+                m={2}
+                gap={60}
               >
                 {edit ? (
                   <FormControl sx={{ m: 1, width: "20ch" }} variant="standard">
@@ -178,7 +177,7 @@ function Cart() {
                   </Box>
                 )}
                 <Box mt={2}>
-                  <Typography variant="h5" color="primary" mr={1} ml={1}>
+                  <Typography variant="h5" color="primary" mr={2} ml={1}>
                     Total: ${cartState.total.toFixed()}
                   </Typography>
                   {discountState !== 0 && (
@@ -209,17 +208,28 @@ function Cart() {
           >
             A Cuenta
           </Button>
-          <IconButton onClick={() => setEdit(!edit)}>
-            <EditSharp />
-          </IconButton>
-          <IconButton
-            onClick={handlePrint}
-            onClickCapture={() => {
-              edit && setEdit(!edit);
-            }}
-          >
-            <PrintIcon />
-          </IconButton>
+          <Tooltip title={"Vaciar"}>
+            <IconButton onClick={handleDeleteAll} color="error">
+              <DeleteSharp />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={"Editar"}>
+            <IconButton onClick={() => setEdit(!edit)} color="primary">
+              <EditSharp />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={"Imprimir"}>
+            <IconButton
+              onClick={handlePrint}
+              color="success"
+              onClickCapture={() => {
+                edit && setEdit(!edit);
+              }}
+            >
+              <PrintIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
         <CartModal open={openModal} handleClose={() => setOpenModal(false)} />
         <CustomerModal

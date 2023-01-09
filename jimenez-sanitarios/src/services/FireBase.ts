@@ -4,14 +4,12 @@ import { getAnalytics } from "firebase/analytics";
 
 import {
   doc,
-  getDoc,
   getFirestore,
   collection,
   getDocs,
   DocumentData,
   updateDoc,
   arrayUnion,
-  documentId,
 } from "firebase/firestore";
 import CartState from "../models/CartState";
 import Product from "../models/Product";
@@ -72,9 +70,12 @@ export const addProductsToClient = async (
   newProducts: Product[]
 ) => {
   const collectionRef = collection(db, "sales");
-  const docRef = doc(db, `${document.id}`);
+  const docRef = doc(db, "sales", document.id);
+
   console.log(docRef);
-  await updateDoc(docRef, {
-    products: newProducts,
+  newProducts.forEach((newProduct) => {
+    updateDoc(docRef, {
+      products: arrayUnion(newProduct),
+    });
   });
 };

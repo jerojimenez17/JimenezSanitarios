@@ -1,21 +1,15 @@
-import {
-  AddBoxSharp,
-  AddCircle,
-  RemoveCircle,
-  TableBar,
-} from "@mui/icons-material";
+import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import {
   Table,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   IconButton,
   TextField,
   Box,
   TableContainer,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { CartContext } from "./context/CartContext";
 import Product from "../../models/Product";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -32,14 +26,7 @@ const CartItems = ({ edit }: props) => {
     removeItem,
     changePrice,
     changeAmount,
-    total,
-    discount,
   } = useContext(CartContext);
-  const { products } = cartState;
-  const [rowsPerPage, setRowsPerPage] = useState(100);
-  const [isInfiniteDisabled, setInfiniteDisabled] = useState(false);
-  const [newPrice, setNewPrice] = useState<Number>();
-  const [newAmount, setNewAmount] = useState<Number>();
 
   const handleAddItem = (producto: Product) => {
     addUnit(producto);
@@ -92,9 +79,6 @@ const CartItems = ({ edit }: props) => {
                   onKeyPress={(e: any) => {
                     handleEditAmount(e, producto);
                   }}
-                  onChange={(e: any) => {
-                    setNewAmount(e.target.value);
-                  }}
                 />
               </TableCell>
             ) : (
@@ -107,9 +91,6 @@ const CartItems = ({ edit }: props) => {
                   className="input-edit-price"
                   onKeyPress={(e: any) => {
                     handleEditPrice(e, producto);
-                  }}
-                  onChange={(e: any) => {
-                    setNewPrice(e.target.value);
                   }}
                   placeholder={"$" + Number(producto.price).toFixed()}
                 />

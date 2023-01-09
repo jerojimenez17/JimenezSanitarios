@@ -2,14 +2,11 @@ import {
   Avatar,
   Backdrop,
   Box,
-  Button,
   Divider,
   Fade,
   List,
-  ListItem,
   ListItemButton,
   Modal,
-  Stack,
   Typography,
 } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
@@ -18,6 +15,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import { fetchSales, addProductsToClient } from "../../services/FireBase";
 import { green } from "@mui/material/colors";
 import { CartContext } from "./context/CartContext";
+import { SdCardAlert } from "@mui/icons-material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -50,7 +48,7 @@ export default function TransitionsModal({
   const { cartState, removeAll, discount, total, clientName } =
     useContext(CartContext);
   const addProductsToCount = async (sale: DocumentData) => {
-    await addProductsToClient(document, cartState.products);
+    await addProductsToClient(sale, cartState.products);
   };
   return (
     <div>

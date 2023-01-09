@@ -1,21 +1,7 @@
 import "./App.css";
 import SearchAppBar from "./components/AppBar/SearchAppBar";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import {
-  Button,
-  Drawer,
-  List,
-  ListItemAvatar,
-  ListItemButton,
-  IconButton,
-  Menu,
-  useMediaQuery,
-} from "@mui/material";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import LeftDrawer from "./components/LeftDrawer";
-import { Router } from "express";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Products from "./Pages/Products";
 import CartProvider from "./components/cart/context/CartProvider";
@@ -33,7 +19,7 @@ function App() {
     setOpenDrawer(!openDrawer);
   };
 
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = createTheme(
     {
       palette: {

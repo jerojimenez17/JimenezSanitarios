@@ -1,21 +1,14 @@
 import {
-  Container,
   FormControl,
   Grid,
   InputLabel,
-  List,
-  ListItem,
-  ListItemText,
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import Cart from "../components/cart/Cart";
 import ProductGrid from "../components/ProductsTable/ProductGrid";
-import ProductsTable from "../components/ProductsTable/ProductsTable";
 import Product from "../models/Product";
 import fetchProducts from "../services/ProductService";
 
@@ -24,7 +17,6 @@ interface ProductProps {
 }
 const Products = ({ openCart }: ProductProps) => {
   const [rowsPerPage, setRowsPerPage] = useState(15);
-  const [hasMore, setHasMore] = useState(true);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [productsListName, setProductListName] = useState<string>("taladro");
@@ -39,14 +31,14 @@ const Products = ({ openCart }: ProductProps) => {
     setProducts(allProducts.slice(0, rowsPerPage));
   }, [allProducts, rowsPerPage]);
 
-  const loadMore = () => {
-    if (rowsPerPage + 10 < allProducts.length) {
-      setRowsPerPage(rowsPerPage + 10);
-      console.log(rowsPerPage);
-    } else {
-      setHasMore(false);
-    }
-  };
+  // const loadMore = () => {
+  //   if (rowsPerPage + 10 < allProducts.length) {
+  //     setRowsPerPage(rowsPerPage + 10);
+  //     console.log(rowsPerPage);
+  //   } else {
+  //     setHasMore(false);
+  //   }
+  // };
   const handleKeyPress = (e: any) => {
     if (e.key === "Enter") {
       setSearch(e.target.value);
@@ -73,7 +65,7 @@ const Products = ({ openCart }: ProductProps) => {
           sx={{
             m: "2rem",
             minWidth: 200,
-            height: "2rem",
+            height: "1.25rem",
             display: "flex",
             justifyContent: "center",
           }}
@@ -105,11 +97,13 @@ const Products = ({ openCart }: ProductProps) => {
           sx={{
             display: "flex",
             justifyContent: "flex-start",
-            maxWidth: "55%",
-            ml: 3,
+            maxWidth: "25%",
+            maxHeight: "80px",
+            ml: 4,
           }}
-          variant="standard"
+          variant="outlined"
           label="Buscar"
+          color="primary"
           onKeyDown={handleKeyPress}
           onChange={handleSearch}
         />

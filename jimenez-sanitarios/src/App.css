@@ -108,7 +108,8 @@ demo-simple-select-helper{
     height: 100px;
     page-break-inside: avoid;
     page-break-after: avoid;
-
+    align-items: center;
+    justify-content: space-between;
 
     flex-wrap: wrap-reverse;
   }
@@ -119,7 +120,7 @@ demo-simple-select-helper{
     
     justify-content: space-between;
     align-items: center;
-    gap: 420px;
+    gap: 400px;
     page-break-inside: avoid;
     page-break-after: avoid;
     

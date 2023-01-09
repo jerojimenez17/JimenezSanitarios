@@ -1,12 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import {
-  DataGrid,
-  GridColDef,
-  GridSelectionModel,
-  GridRowParams,
-  GridValueGetterParams,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Product from "../../models/Product";
 import { CartContext } from "../cart/context/CartContext";
 interface propsGrid {
@@ -32,7 +26,7 @@ const ProductGrid = ({ products }: propsGrid) => {
       field: "brand",
       headerName: "Marca",
       headerClassName: "header-grid",
-      width: 250,
+      width: 350,
       editable: true,
     },
     {
@@ -53,16 +47,16 @@ const ProductGrid = ({ products }: propsGrid) => {
   }, [selectionModel, setSelectionModel]);
 
   return (
-    <div style={{ height: "70vh", width: "100%" }}>
+    <div style={{ height: "73vh", width: "100%" }}>
       <DataGrid
         sx={{
           boxShadow: 2,
         }}
         className="products-grid"
-        density="compact"
+        density="standard"
         rows={products}
         columns={columns}
-        pageSize={11}
+        pageSize={9}
         onSelectionModelChange={(ids) => {
           const selectedIDs = new Set(ids);
           const selectedRowData = products

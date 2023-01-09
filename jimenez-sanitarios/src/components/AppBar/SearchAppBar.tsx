@@ -7,10 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import { KeyboardEventHandler, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { grey } from "@mui/material/colors";
 import { Badge } from "@mui/material";
 import { CartContext } from "../cart/context/CartContext";
 
