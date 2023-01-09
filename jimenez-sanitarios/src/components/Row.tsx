@@ -52,7 +52,16 @@ const Row = ({ row }: rowProps) => {
         </TableCell>
 
         <TableCell align="center">
-          <Typography variant="h6">${row.total.toFixed(2)}</Typography>
+          <Typography variant="h6">
+            $
+            {row.products
+              .reduce(
+                (acc: number, cur: { price: number; amount: number }) =>
+                  acc + cur.price * cur.amount,
+                0
+              )
+              .toFixed()}
+          </Typography>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -85,7 +94,7 @@ const Row = ({ row }: rowProps) => {
                       <TableCell align="right">{product.description}</TableCell>
                       <TableCell align="right">{product.amount}</TableCell>
                       <TableCell align="right">
-                        ${product.price.toFixed()}
+                        ${Number(product.price).toFixed()}
                       </TableCell>
                       <TableCell align="right">
                         ${(product.price * product.amount).toFixed()}
