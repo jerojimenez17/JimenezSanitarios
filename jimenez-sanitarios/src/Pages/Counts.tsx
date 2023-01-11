@@ -1,10 +1,5 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
-  Button,
-  ListItem,
   Paper,
   Table,
   TableBody,
@@ -14,18 +9,9 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
-import {
-  collection,
-  DocumentData,
-  getDocs,
-  QueryDocumentSnapshot,
-} from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import CartItems from "../components/cart/CartItems";
-import CartState from "../models/CartState";
-import Product from "../models/Product";
-import { db, fetchSales } from "../services/FireBase";
+import { fetchSales } from "../services/FireBase";
 import Row from "../components/Row";
 
 const Counts = () => {
@@ -38,13 +24,6 @@ const Counts = () => {
     });
     console.log(sales);
   }, []);
-  const [expanded, setExpanded] = React.useState<string | false>(false);
-
-  const handleChange =
-    (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
-      console.log(panel);
-      setExpanded(isExpanded ? panel : false);
-    };
 
   return (
     <Box mt={2} ml="2rem" mr="2rem" maxWidth={"50"}>
@@ -66,6 +45,12 @@ const Counts = () => {
               <TableCell align="center">
                 <Typography variant="h6" color="primary.light">
                   Total
+                </Typography>
+              </TableCell>
+              <TableCell>
+                {" "}
+                <Typography variant="h6" color="primary.light">
+                  Acciones
                 </Typography>
               </TableCell>
             </TableRow>

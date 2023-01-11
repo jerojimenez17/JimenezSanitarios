@@ -1,4 +1,4 @@
-import { Backdrop, Box, Fade, List, Modal } from "@mui/material";
+import { Backdrop, Box, Fade, Modal } from "@mui/material";
 import React from "react";
 
 interface CustomerModalProps {
