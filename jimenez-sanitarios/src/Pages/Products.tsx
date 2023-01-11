@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   Grid,
   InputLabel,
@@ -50,15 +51,23 @@ const Products = ({ openCart }: ProductProps) => {
     }
   };
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={12}>
-        {/* // a box who contains a select in horizontal mode */}
-        {/* <Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-          > */}
+    <>
+      <Box display="flex" justifyContent="flex-start" alignItems="center">
+        <TextField
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            maxWidth: "25%",
+            minWidth: "25%",
+            maxHeight: "80px",
+            ml: 4,
+          }}
+          variant="outlined"
+          label="Buscar"
+          color="primary"
+          onKeyDown={handleKeyPress}
+          onChange={handleSearch}
+        />
         <FormControl
           color="primary"
           focused
@@ -92,27 +101,11 @@ const Products = ({ openCart }: ProductProps) => {
           </Select>
         </FormControl>
         {/* </Box>
-        </Box> */}
-        <TextField
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            maxWidth: "25%",
-            maxHeight: "80px",
-            ml: 4,
-          }}
-          variant="outlined"
-          label="Buscar"
-          color="primary"
-          onKeyDown={handleKeyPress}
-          onChange={handleSearch}
-        />
-      </Grid>
-      {
-        //this grid contains the table of products and the cart who only shows when state.products is not empty
-      }
-      <Grid item xs={12} md={openCart ? 6 : 12}>
-        {/* <InfiniteScroll
+      </Box> */}
+      </Box>
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={openCart ? 6 : 12}>
+          {/* <InfiniteScroll
           dataLength={products.length}
           next={loadMore}
           hasMore={hasMore}
@@ -124,34 +117,36 @@ const Products = ({ openCart }: ProductProps) => {
             searchText={search}
           />
         </InfiniteScroll> */}
-        <ProductGrid
-          products={allProducts.filter((product) => {
-            return (
-              product.description
-                ?.toString()
-                .toLocaleLowerCase()
-                .includes(search.toLowerCase()) ||
-              product.cod
-                ?.toString()
-                .toLocaleLowerCase()
-                .includes(search.toLowerCase()) ||
-              product.brand
-                ?.toString()
-                .toLocaleLowerCase()
-                .includes(search.toLowerCase())
-            );
-          })}
-        />
+          <ProductGrid
+            openCart={openCart}
+            products={allProducts.filter((product) => {
+              return (
+                product.description
+                  ?.toString()
+                  .toLocaleLowerCase()
+                  .includes(search.toLowerCase()) ||
+                product.cod
+                  ?.toString()
+                  .toLocaleLowerCase()
+                  .includes(search.toLowerCase()) ||
+                product.brand
+                  ?.toString()
+                  .toLocaleLowerCase()
+                  .includes(search.toLowerCase())
+              );
+            })}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={openCart ? 12 : 0}
+          md={openCart ? 6 : 0}
+          hidden={!openCart}
+        >
+          <Cart />
+        </Grid>
       </Grid>
-      <Grid
-        item
-        xs={openCart ? 12 : 0}
-        md={openCart ? 6 : 0}
-        hidden={!openCart}
-      >
-        <Cart />
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

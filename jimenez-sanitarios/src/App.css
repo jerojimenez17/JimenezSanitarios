@@ -66,6 +66,10 @@ demo-simple-select-helper{
 .header-grid:hover{
   color: #61dafb;
 
+
+}
+.cart{
+  min-height: 72.7vh;
 }
 .cart-container{
   max-height: 400px;

@@ -5,28 +5,29 @@ import Product from "../../models/Product";
 import { CartContext } from "../cart/context/CartContext";
 interface propsGrid {
   products: Product[];
+  openCart: boolean;
 }
-const ProductGrid = ({ products }: propsGrid) => {
+const ProductGrid = ({ products, openCart }: propsGrid) => {
   const columns: GridColDef[] = [
     {
       field: "cod",
       headerName: "Codigo",
       headerClassName: "header-grid",
-      width: 120,
+      width: openCart ? 60 : 120,
       minWidth: 60,
     },
     {
       field: "description",
       headerName: "Descripcion",
       headerClassName: "header-grid",
-      width: 700,
+      width: openCart ? 350 : 700,
       editable: true,
     },
     {
       field: "brand",
       headerName: "Marca",
       headerClassName: "header-grid",
-      width: 350,
+      width: openCart ? 100 : 350,
       editable: true,
     },
     {
@@ -47,7 +48,7 @@ const ProductGrid = ({ products }: propsGrid) => {
   }, [selectionModel, setSelectionModel]);
 
   return (
-    <div style={{ height: "73vh", width: "100%" }}>
+    <div style={{ height: "80vh", width: "100%" }}>
       <DataGrid
         sx={{
           boxShadow: 2,
