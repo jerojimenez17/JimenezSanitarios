@@ -1,35 +1,24 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { CartContext } from "./context/CartContext";
-import CartItems from "./CartItems";
+
 import {
   Box,
   Button,
   Divider,
-  FilledInput,
-  FormControl,
-  FormHelperText,
   IconButton,
-  InputAdornment,
   Paper,
-  TextField,
   Tooltip,
-  Typography,
 } from "@mui/material";
-import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
-import {
-  DeleteForeverSharp,
-  DeleteSharp,
-  EditSharp,
-} from "@mui/icons-material";
+import { DeleteSharp, EditSharp } from "@mui/icons-material";
 import { db } from "../../services/FireBase";
 import { addDoc, collection } from "firebase/firestore";
 import CartModal from "./CartModal";
 import CustomerModal from "./CustomerModal";
+import PrinteableProducts from "../PrinteableProducts";
 // import JimenezLogo from "../../assets/logo";
 
 function Cart() {
-  const [fecha, setFecha] = useState<Date>();
   const { cartState, removeAll, discount, total, clientName } =
     useContext(CartContext);
   const [discountState, setDiscountState] = useState(0);
@@ -45,14 +34,7 @@ function Cart() {
   const handleDeleteAll = () => {
     removeAll();
   };
-  const ref = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => ref.current,
-  });
-  useEffect(() => {
-    const hoy = Date.now();
-    setFecha(new Date(hoy));
-  }, [handlePrint]);
+  const [print, setPrint] = useState(false);
 
   // useEffect(() => {
   //   setTimeout(() =>{
@@ -70,7 +52,6 @@ function Cart() {
       discount(discountState);
     }
   };
-  const [focus, setFocus] = useState(true);
   const [edit, setEdit] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const [openCustomerModal, setOpenCustomerModal] = useState(false);
@@ -95,10 +76,17 @@ function Cart() {
   return (
     <Paper className="itemCart">
       <Box>
-        <Box ref={ref} className="printeable-cart">
-          {/* <Typography variant="h3" className="title-card" color="primary" ml={1}>
+        <PrinteableProducts
+          print={print}
+          edit={edit}
+          products={cartState.products}
+          client={cartState.client}
+          setPrint={setPrint}
+        />
+        {/* <Box ref={ref} className="printeable-cart">
+          <Typography variant="h3" className="title-card" color="primary" ml={1}>
           Jimenez Sanitarios
-          </Typography>  */}
+          </Typography> 
           <Box m={1} className="cart">
             <Box display="flex">
               <Box className="logo">
@@ -110,7 +98,7 @@ function Cart() {
                 >
                   Jimenez Sanitarios
                 </Typography>
-                {/* <img className="img-logo" alt="Jimenez Sanitarios" /> */}
+                 <img className="img-logo" alt="Jimenez Sanitarios" /> 
               </Box>
               <div className="date-customer-container">
                 <Typography variant="h6" className="date">
@@ -130,7 +118,7 @@ function Cart() {
               <CartItems edit={edit} />
             </Box>
 
-            <Divider />
+            <Divider /> 
             <Box
               display="flex"
               flexDirection="row"
@@ -189,13 +177,13 @@ function Cart() {
                     >
                       Total con Descuento: $
                       {cartState.totalWithDiscount.toFixed()}
-                    </Typography>
+                    </Typography>x
                   )}
                 </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
+        </Box> */}
         <Divider />
         <Box display="flex" justifyContent="space-around" alignItems="center">
           <Button color="success" variant="contained" onClick={handleSaveSale}>
@@ -221,7 +209,9 @@ function Cart() {
 
           <Tooltip title={"Imprimir"}>
             <IconButton
-              onClick={handlePrint}
+              onClick={() => {
+                setPrint(!print);
+              }}
               color="success"
               onClickCapture={() => {
                 edit && setEdit(!edit);
