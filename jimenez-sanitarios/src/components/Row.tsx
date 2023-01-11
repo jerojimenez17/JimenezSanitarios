@@ -1,32 +1,51 @@
 import {
   Box,
+  Button,
+  ButtonBase,
   Collapse,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Divider,
   IconButton,
+  Modal,
   Paper,
-  Tab,
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { DocumentData } from "firebase/firestore";
-import React, { useState } from "react";
+import { deleteDoc, doc, DocumentData } from "firebase/firestore";
+import React, { useRef, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Product from "../models/Product";
+import { Delete, Print } from "@mui/icons-material";
+import { useReactToPrint } from "react-to-print";
+import { db } from "../services/FireBase";
 
 interface rowProps {
+  key: string;
   row: DocumentData;
 }
 
-const Row = ({ row }: rowProps) => {
+const Row = ({ key, row }: rowProps) => {
   const [open, setOpen] = useState(false);
-
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const ref = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => ref.current,
+  });
+  const handleDelete = (row: DocumentData) => {
+    deleteDoc(doc(db, "sales", row.id));
+  };
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow key={key} sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
             aria-label="expand now"
@@ -63,20 +82,53 @@ const Row = ({ row }: rowProps) => {
               .toFixed()}
           </Typography>
         </TableCell>
+        <TableCell>
+          <Tooltip title={"Imprimir"}>
+            <IconButton
+              onClick={() => {
+                handlePrint();
+              }}
+              color="primary"
+            >
+              <Print />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Borrar">
+            <IconButton
+              color="error"
+              onClick={() => {
+                setOpenDeleteModal(!openDeleteModal);
+              }}
+            >
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit component={Paper}>
-            <Box sx={{ margin: 1, backgroundColor: "#f0f0f0", boxShadow: 2 }}>
-              <Typography
-                m={2}
-                variant="h6"
-                gutterBottom
-                component="div"
-                color="primary"
-              >
-                Productos de {row.client}
-              </Typography>
+            <Box
+              sx={{ margin: 1, backgroundColor: "#f0f0f0", boxShadow: 2 }}
+              ref={ref}
+            >
+              <Box display="flex" justifyContent="space-between">
+                <Typography
+                  m={2}
+                  variant="h5"
+                  gutterBottom
+                  component="div"
+                  color="primary"
+                >
+                  {row.client}
+                </Typography>
+                <Box display="flex" justifyContent="flex-end" m={2}>
+                  <Typography variant="h6">
+                    {new Date(row.date.seconds * 1000).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              </Box>
+              <Divider />
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -89,7 +141,7 @@ const Row = ({ row }: rowProps) => {
                 </TableHead>
                 <TableBody>
                   {row.products.map((product: Product) => (
-                    <TableRow>
+                    <TableRow key={product.id}>
                       <TableCell align="right">{product.cod}</TableCell>
                       <TableCell align="right">{product.description}</TableCell>
                       <TableCell align="right">{product.amount}</TableCell>
@@ -102,11 +154,54 @@ const Row = ({ row }: rowProps) => {
                     </TableRow>
                   ))}
                 </TableBody>
+                <Box display="flex" justifyContent="flex-end" width="100%">
+                  <Typography variant="h5">
+                    Total:
+                    {row.products
+                      .reduce(
+                        (acc: number, cur: { price: number; amount: number }) =>
+                          acc + cur.price * cur.amount,
+                        0
+                      )
+                      .toFixed()}
+                  </Typography>
+                </Box>
               </Table>
             </Box>
           </Collapse>
         </TableCell>
       </TableRow>
+      <Dialog open={openDeleteModal}>
+        <DialogTitle>
+          Seguro que desea eliminar la cuenta de {row.client}
+        </DialogTitle>
+        <DialogActions>
+          <Box display="flex" justifyContent="space-between">
+            <Box display="flex">
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  handleDelete(row);
+                }}
+              >
+                Borrar
+              </Button>
+            </Box>
+            <Box display="flex">
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  setOpenDeleteModal(!openDeleteModal);
+                }}
+              >
+                Cancelar
+              </Button>
+            </Box>
+          </Box>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
