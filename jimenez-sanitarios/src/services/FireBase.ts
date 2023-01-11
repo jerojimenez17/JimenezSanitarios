@@ -69,7 +69,6 @@ export const addProductsToClient = async (
   document: DocumentData,
   newProducts: Product[]
 ) => {
-  const collectionRef = collection(db, "sales");
   const docRef = doc(db, "sales", document.id);
 
   console.log(docRef);
