@@ -52,14 +52,20 @@ const Products = ({ openCart }: ProductProps) => {
   };
   return (
     <>
-      <Box display="flex" justifyContent="flex-start" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+        className="search-select-container"
+      >
         <TextField
           sx={{
             display: "flex",
             justifyContent: "flex-start",
             maxWidth: "25%",
             minWidth: "25%",
-            maxHeight: "80px",
+            maxHeight: "60px",
+            height: "50px",
             ml: 4,
           }}
           variant="outlined"

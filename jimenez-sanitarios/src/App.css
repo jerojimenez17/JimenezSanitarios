@@ -68,6 +68,11 @@ demo-simple-select-helper{
 
 
 }
+.search-select-container{
+  max-height: 4rem;
+  min-height: auto;
+  
+}
 .cart{
   min-height: 72vh;
 }
