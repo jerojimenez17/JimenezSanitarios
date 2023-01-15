@@ -1,16 +1,20 @@
+import { Refresh } from "@mui/icons-material";
 import {
   Box,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Cart from "../components/cart/Cart";
 import ProductGrid from "../components/ProductsTable/ProductGrid";
 import Product from "../models/Product";
+import { saveProducts } from "../services/FireBase";
 import fetchProducts from "../services/ProductService";
 
 interface ProductProps {
@@ -49,6 +53,9 @@ const Products = ({ openCart }: ProductProps) => {
     if (e.target.value === "") {
       setSearch("");
     }
+  };
+  const handleSaveProducts = async () => {
+    saveProducts(productsListName, allProducts);
   };
   return (
     <>
@@ -106,6 +113,20 @@ const Products = ({ openCart }: ProductProps) => {
             <MenuItem value="ciardi">Ciardi</MenuItem>
           </Select>
         </FormControl>
+        <Tooltip title={"Imprimir"}>
+          <IconButton
+            onClick={() => {
+              handleSaveProducts();
+            }}
+            sx={{
+              "&:hover": {
+                backgroundColor: "primary.light",
+              },
+            }}
+          >
+            <Refresh />
+          </IconButton>
+        </Tooltip>
         {/* </Box>
       </Box> */}
       </Box>

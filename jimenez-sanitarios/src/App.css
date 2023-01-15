@@ -38,6 +38,9 @@ demo-simple-select-helper{
   align-items: center;
   justify-content: center;
 }
+.products-cart{
+  min-height: 63vh;
+}
 .logo{
   display:none;
 }
