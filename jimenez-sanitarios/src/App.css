@@ -146,3 +146,8 @@ demo-simple-select-helper{
     min-height: 60vh;
   }
 }
+@media screen and (max-width:800px) {
+  .menu-button{
+    display: none;
+  }
+}

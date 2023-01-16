@@ -1,6 +1,6 @@
 import "./App.css";
 import SearchAppBar from "./components/AppBar/SearchAppBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LeftDrawer from "./components/LeftDrawer";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Products from "./Pages/Products";
@@ -12,7 +12,7 @@ import { pink } from "@mui/material/colors";
 
 function App() {
   const [openDrawer, setOpenDrawer] = useState(false);
-
+  const [page, setPage] = useState(window.location.href.split("/")[3]);
   const [searchText, setSearchText] = useState("");
   const [openCart, setOpenCart] = useState(false);
   const handleOpenDrawer = () => {
@@ -36,12 +36,16 @@ function App() {
       mode: "dark",
     },
   });
-
+  useEffect(() => {
+    console.log(page);
+  }, [page]);
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <CartProvider>
           <SearchAppBar
+            page={page}
+            handlePageChange={setPage}
             openCart={openCart}
             setOpenCart={setOpenCart}
             openDrawer={handleOpenDrawer}

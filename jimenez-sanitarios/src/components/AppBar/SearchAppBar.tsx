@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useContext } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Badge } from "@mui/material";
+import { Badge, Link } from "@mui/material";
 import { CartContext } from "../cart/context/CartContext";
 
 // const Search = styled("div")(({ theme }) => ({
@@ -57,12 +57,16 @@ interface SearchAppBarProps {
   searchText: string;
   setOpenCart: (value: boolean) => void;
   openCart: boolean;
+  page: string;
+  handlePageChange: React.Dispatch<React.SetStateAction<string>>;
 }
 export default function SearchAppBar({
   openDrawer,
   handleSearchText,
   searchText,
   setOpenCart,
+  page,
+  handlePageChange,
   openCart,
 }: SearchAppBarProps) {
   const { cartState } = useContext(CartContext);
@@ -73,14 +77,61 @@ export default function SearchAppBar({
         <Toolbar>
           <IconButton
             size="large"
+            className="menu-button"
             edge="start"
             color="inherit"
             aria-label="open drawer"
             onClick={openDrawer}
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, display: { lg: "none" } }}
           >
             <MenuIcon />
           </IconButton>
+          <Box
+            className="navigation"
+            sx={{ display: { xs: "none", lg: "flex" } }}
+            justifyContent="space-between"
+            width="14rem"
+          >
+            <Box
+              display="flex"
+              borderBottom={page === "counts" ? "none" : "3px solid blue"}
+              alignContent="center"
+              alignItems="center"
+            >
+              <Link
+                href="products"
+                underline="none"
+                color={page === "products" ? "primary" : "inherit"}
+                onClick={() => {
+                  handlePageChange("products");
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  color={page === "products" ? "primary" : "inherit"}
+                >
+                  Productos
+                </Typography>
+              </Link>
+            </Box>
+            <Box
+              display="flex"
+              borderBottom={page === "products" ? "none" : "3px solid blue"}
+              alignContent="center"
+              textAlign="center"
+            >
+              <Link
+                color={page === "counts" ? "primary" : "inherit"}
+                href="counts"
+                underline="none"
+                onClick={() => {
+                  handlePageChange("counts");
+                }}
+              >
+                <Typography variant="h6">Cuentas</Typography>
+              </Link>
+            </Box>
+          </Box>
           <Typography
             color="primary"
             variant="h5"
