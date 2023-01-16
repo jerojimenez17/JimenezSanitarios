@@ -10,6 +10,8 @@ import {
   DocumentData,
   updateDoc,
   arrayUnion,
+  addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import CartState from "../models/CartState";
 import Product from "../models/Product";
@@ -75,6 +77,19 @@ export const addProductsToClient = async (
   newProducts.forEach((newProduct) => {
     updateDoc(docRef, {
       products: arrayUnion(newProduct),
+    });
+  });
+};
+// save the products in documents
+
+export const saveProducts = async (list: string, products: Product[]) => {
+  const collectionRef = collection(db, `${list}`);
+  products.forEach(async (product) => {
+    const date = new Date();
+    const docref = await addDoc(collectionRef, {
+      ...product,
+      timestamp: serverTimestamp(),
+      listName: list,
     });
   });
 };
